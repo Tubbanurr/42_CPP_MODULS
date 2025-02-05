@@ -8,8 +8,8 @@ Bu modülde, **C++'ta temel veri türleri, explicit type casting (açık tip dö
 
 ## 📌 **Genel Kurallar**
 
-- Kodunuzu `derleyicisiyle` bayraklarıyla derleyin.
-- **C++98** standardı kullanılmalıdır (\`\` ile uyumlu olmalıdır).
+- Kodunuzu `c++` derleyicisiyle `-Wall -Wextra -Werror` bayraklarıyla derleyin.
+- **C++98** standardı kullanılmalıdır (`-std=c++98` ile uyumlu olmalıdır).
 - **Kütüphane Kullanımı:**
   - **STL kullanımı yasaktır (vector, list, map vb.).**
   - **Boost ve C++11 özellikleri yasaktır.**
@@ -33,15 +33,15 @@ Bu modülde, **C++'ta temel veri türleri, explicit type casting (açık tip dö
 📌 **ScalarConverter** sınıfını oluşturun. Bu sınıf:
 
 - **Özel sayı değerlerini** (`+inf`, `-inf`, `nan`, `+inff`, `-inff`, `nanf`) tanıyabilmeli.
-- **Yalnızca **``** yaparak** nesne oluşturulmasını engelleyin.
-- **Veri türü dönüşümlerini (**`**, **`**, **``**) gerçekleştirmeli.**
-- **Güvenli dönüşüm için ****\`\`**** kullanılmalıdır.**
+- **Yalnızca `static` metodlar içermeli.** **Kurucu fonksiyonu `private` yaparak** nesne oluşturulmasını engelleyin.
+- **Veri türü dönüşümlerini (`char`, `int`, `float`, `double`) gerçekleştirmeli.**
+- **Güvenli dönüşüm için `static_cast<>` kullanılmalıdır.**
 
 📌 **Özel Sayılar & IEEE 754**
 
 - `+inf`, `-inf` ve `nan` **double** türü içindir.
 - `+inff`, `-inff`, `nanf` **float** türü içindir.
-- **Sonsuzluk (**`**) ve tanımsızlık (**`**)** kavramları **IEEE 754 kayan noktalı sayı standardına** dayanmaktadır.
+- **Sonsuzluk (`inf`) ve tanımsızlık (`nan`)** kavramları **IEEE 754 kayan noktalı sayı standardına** dayanmaktadır.
 
 **🚀 Örnek Kullanım**
 
@@ -57,11 +57,11 @@ ScalarConverter::convert("+inf");   // Pozitif sonsuzluğu tanır
 
 📌 **Veri Serileştirme (Serialization)**
 
-- **Bir veri yapısını (**`**) **`\*\* türüne çevirerek serileştirme yapın.\*\*
-- **Daha sonra bunu tekrar ****\`\`**** olarak geri çevirerek deserializasyon yapın.**
-- **Güvenli dönüşüm için ****\`\`**** kullanılmalıdır.**
+- **Bir veri yapısını (`struct`) `uintptr_t` türüne çevirerek serileştirme yapın.**
+- **Daha sonra bunu tekrar `struct*` olarak geri çevirerek deserializasyon yapın.**
+- **Güvenli dönüşüm için `reinterpret_cast<>` kullanılmalıdır.**
 
-📌 \`\`\*\* Nedir?\*\*
+📌 **`uintptr_t` Nedir?**
 
 - **Pointer'ları güvenli bir şekilde tamsayıya çeviren özel bir türdür.**
 - **Platform bağımsızdır.** 32-bit sistemde `uint32_t`, 64-bit sistemde `uint64_t` olarak çalışır.
@@ -86,9 +86,9 @@ Data* deserialized = Serializer::deserialize(raw);
 📌 **Gerçek Türü Belirleme**
 
 - **Polimorfizm kullanarak** bir nesnenin **gerçek türünü belirleyin.**
-- \`\`\*\* ile güvenli tür dönüşümleri yapın.\*\*
-- **Başarısız dönüşümlerde ****\`\`**** hatası fırlatılmalıdır.**
-- **Hem **``** parametreleriyle çalışabilmelidir.**
+- **`dynamic_cast<>` ile güvenli tür dönüşümleri yapın.**
+- **Başarısız dönüşümlerde `std::bad_cast` hatası fırlatılmalıdır.**
+- **Hem `Base*` hem de `Base&` parametreleriyle çalışabilmelidir.**
 
 **🚀 Örnek Kullanım**
 
@@ -103,6 +103,4 @@ if (d)
 ```
 
 ---
-
-
 
